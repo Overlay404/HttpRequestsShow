@@ -20,23 +20,35 @@ namespace HttpRequestsShow
     /// </summary>
     public partial class MainWindow : Window
     {
+
+
+        public List<User> Users
+        {
+            get { return (List<User>)GetValue(ClientsProperty); }
+            set { SetValue(ClientsProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for Clients.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty ClientsProperty =
+            DependencyProperty.Register("Users", typeof(List<User>), typeof(MainWindow));
+
+
         public MainWindow()
         {
             InitializeComponent();
-
-            
         }
 
         async void RequestGetUsers()
         {
             var clients = await RequestManager.Get<List<Client>>("Users/GetAllUsers");
-            DataGridShowDatainHTTPRequest.ItemsSource = clients;
+            Users = clients.Cast<User>().ToList();
+            
         }
 
         async void RequestGetRealtors()
         {
             var realtors = await RequestManager.Get<List<Realtor>>("Realtors/GetAllRealtors");
-            DataGridShowDatainHTTPRequest.ItemsSource = realtors;
+            Users = realtors.Cast<User>().ToList();
         }
 
         async void RequestGetUser()
@@ -69,25 +81,51 @@ namespace HttpRequestsShow
         {
             RequestGetUser();
         }
+
+        private void Button_Click_3(object sender, RoutedEventArgs e)
+        {
+            if (DataGridShowDatainHTTPRequest.SelectedItem == null) return;
+            new EditWindow((User)DataGridShowDatainHTTPRequest.SelectedItem).ShowDialog();
+            Hide();
+        }
     }
 
 
-    public class Client
+    public class Client : User
     {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public string Surname { get; set; }
-        public string Patronymic { get; set; }
         public string Phone { get; set; }
         public string Email { get; set; }
+
+        public Client(int Id, string Name, string Surname, string Patronymic, string Phone, string Email) : base(Id, Name, Surname, Patronymic) 
+        {
+            this.Phone = Phone;
+            this.Email = Email;
+        }
     }
 
-    public partial class Realtor
+    public partial class Realtor : User
+    {
+        public Nullable<double> DealShare { get; set; }
+
+        public Realtor(int Id, string Name, string Surname, string Patronymic, Nullable<double> DealShare) : base(Id, Name, Surname, Patronymic) 
+        {
+            this.DealShare = DealShare;
+        }
+    }
+
+    public partial class User
     {
         public int Id { get; set; }
         public string Name { get; set; }
         public string Surname { get; set; }
         public string Patronymic { get; set; }
-        public Nullable<double> DealShare { get; set; }
+
+        public User(int Id, string Name, string Surname, string Patronymic)
+        {
+            this.Id = Id;
+            this.Name = Name;
+            this.Surname = Surname;
+            this.Patronymic = Patronymic;
+        }
     }
 }

@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:HttpRequestsShow"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="450" Width="800"
+        DataContext="{Binding RelativeSource={RelativeSource Self}}">
     <Grid>
         <StackPanel VerticalAlignment="Top"
                     HorizontalAlignment="Left" Orientation="Horizontal">
@@ -19,10 +20,23 @@
             <TextBox x:Name="SearchUser"
                      Width="150"/>
             <Button Content="Поиск" Click="Button_Click_2"/>
+            <Button Content="Добавить"
+                    Margin="10 0 0 0" Click="Button_Click_3"/>
         </StackPanel>
-        <DataGrid VerticalAlignment="Bottom"
+        <ListView VerticalAlignment="Bottom"
                   Height="350"
-                  CanUserAddRows="False"
-                  x:Name="DataGridShowDatainHTTPRequest"></DataGrid>
+                  x:Name="DataGridShowDatainHTTPRequest"
+                  ItemsSource="{Binding Users}">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn DisplayMemberBinding="{Binding Path=Name}">Имя</GridViewColumn>
+                    <GridViewColumn DisplayMemberBinding="{Binding Path=Surname}" Width="100">Фамилия</GridViewColumn>
+                    <GridViewColumn DisplayMemberBinding="{Binding Path=Patronymic}">Отчество</GridViewColumn>
+                    <GridViewColumn DisplayMemberBinding="{Binding Path=Phone}">Телефон</GridViewColumn>
+                    <GridViewColumn DisplayMemberBinding="{Binding Path=Email}">Почта</GridViewColumn>
+                    <GridViewColumn DisplayMemberBinding="{Binding Path=DealShare}">Процентная ставка</GridViewColumn>
+                </GridView>
+            </ListView.View>
+        </ListView>
     </Grid>
 </Window>

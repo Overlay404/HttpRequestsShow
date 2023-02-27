@@ -1,0 +1,70 @@
+﻿<Window x:Class="HttpRequestsShow.EditWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:HttpRequestsShow"
+        mc:Ignorable="d"
+        Title="EditWindow" Height="450" Width="400"
+        ResizeMode="NoResize"
+        DataContext="{Binding RelativeSource={RelativeSource Self}}">
+    <Window.Resources>
+        <Style x:Key="ButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="#474a50"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border BorderBrush="Black" BorderThickness="3" CornerRadius="10" Padding="5 3"
+                                Background="#474a50">
+                            <TextBlock Text="{TemplateBinding Content}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="Black"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+    
+    <Grid>
+        <StackPanel>
+        <ContentControl Content="{Binding User}" Margin="10">
+            <ContentControl.ContentTemplate>
+                <DataTemplate>
+                    <StackPanel>
+                        <StackPanel>
+                            <TextBlock Text="Имя"/>
+                            <TextBox Text="{Binding Name}"/>
+                        </StackPanel>
+                        <StackPanel>
+                            <TextBlock Text="Фамилия"/>
+                            <TextBox Text="{Binding Surname}"/>
+                        </StackPanel>
+                        <StackPanel>
+                            <TextBlock Text="Отчество"/>
+                            <TextBox Text="{Binding Patronymic}"/>
+                        </StackPanel>
+                        <StackPanel>
+                            <TextBlock Text="Телефон"/>
+                            <TextBox Text="{Binding Phone}"/>
+                        </StackPanel>
+                        <StackPanel>
+                            <TextBlock Text="Почта"/>
+                            <TextBox Text="{Binding Email}"/>
+                        </StackPanel>
+                        <StackPanel>
+                            <TextBlock Text="Процентная ставка"/>
+                            <TextBox Text="{Binding DealShare}"/>
+                        </StackPanel>
+                    </StackPanel>
+                </DataTemplate>
+            </ContentControl.ContentTemplate>
+        </ContentControl>
+            <Button Content="Подтвердить" HorizontalAlignment="Center" VerticalAlignment="Bottom" Style="{StaticResource ButtonStyle}"/>
+        </StackPanel>
+    </Grid>
+</Window>
