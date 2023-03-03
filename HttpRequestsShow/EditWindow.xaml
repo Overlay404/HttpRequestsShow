@@ -32,7 +32,7 @@
     
     <Grid>
         <StackPanel>
-        <ContentControl Content="{Binding User}" Margin="10">
+        <ContentControl Content="{Binding user}" Margin="10">
             <ContentControl.ContentTemplate>
                 <DataTemplate>
                     <StackPanel>
@@ -64,7 +64,7 @@
                 </DataTemplate>
             </ContentControl.ContentTemplate>
         </ContentControl>
-            <Button Content="Подтвердить" HorizontalAlignment="Center" VerticalAlignment="Bottom" Style="{StaticResource ButtonStyle}"/>
+            <Button Content="Подтвердить" HorizontalAlignment="Center" VerticalAlignment="Bottom" Style="{StaticResource ButtonStyle}" Click="Button_Click"/>
         </StackPanel>
     </Grid>
 </Window>

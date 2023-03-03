@@ -38,38 +38,49 @@ namespace HttpRequestsShow
             InitializeComponent();
         }
 
-        async void RequestGetUsers()
+        public async void RequestGetClients()
         {
             var clients = await RequestManager.Get<List<Client>>("Users/GetAllUsers");
             Users = clients.Cast<User>().ToList();
             
         }
 
-        async void RequestGetRealtors()
+        public async void RequestGetRealtors()
         {
             var realtors = await RequestManager.Get<List<Realtor>>("Realtors/GetAllRealtors");
             Users = realtors.Cast<User>().ToList();
         }
 
+        async void RequestDeleteClient(int id)
+        {
+            await RequestManager.Delete<Client>($"Clients/Delete/{id}");
+        }
+
+        async void RequestDeleteRealtor(int id)
+        {
+            await RequestManager.Delete<Realtor>($"Realtors/Delete/{id}");
+        }
+
         async void RequestGetUser()
         {
             var name = SearchUser.Text.Trim();
+            if (name == "") return;
+
             var realtor = await RequestManager.Get<List<Realtor>>($"Realtors/{name}");
-            
 
             var client = await RequestManager.Get<List<Realtor>>($"Users/{name}");
 
             if (realtor.Count != 0)
-                DataGridShowDatainHTTPRequest.ItemsSource = realtor;
+                Users = realtor.Cast<User>().ToList();
             else if (client.Count != 0)
-                DataGridShowDatainHTTPRequest.ItemsSource = client;
+                Users = client.Cast<User>().ToList();
             else
                 SearchUser.Text = "Нет такого пользователя";
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            RequestGetUsers();
+            RequestGetClients();
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
@@ -86,7 +97,14 @@ namespace HttpRequestsShow
         {
             if (DataGridShowDatainHTTPRequest.SelectedItem == null) return;
             new EditWindow((User)DataGridShowDatainHTTPRequest.SelectedItem).ShowDialog();
-            Hide();
+        }
+
+        private void Button_Click_4(object sender, RoutedEventArgs e)
+        {
+            if (DataGridShowDatainHTTPRequest.SelectedItem == null) return;
+            if (DataGridShowDatainHTTPRequest.SelectedItem is Client) RequestDeleteClient((DataGridShowDatainHTTPRequest.SelectedItem as Client).Id);
+            if (DataGridShowDatainHTTPRequest.SelectedItem is Realtor) RequestDeleteRealtor((DataGridShowDatainHTTPRequest.SelectedItem as Realtor).Id);
+            MessageBox.Show("Объект удалён");
         }
     }
 

@@ -20,12 +20,13 @@ namespace HttpRequestsShow
     public partial class EditWindow : Window
     {
 
-
-        public User User
+        public User user
         {
             get { return (User)GetValue(UserProperty); }
             set { SetValue(UserProperty, value); }
         }
+
+        public static User userStatic { get; set; }
 
         public static readonly DependencyProperty UserProperty =
             DependencyProperty.Register("User", typeof(User), typeof(EditWindow));
@@ -34,8 +35,27 @@ namespace HttpRequestsShow
 
         public EditWindow(User user)
         {
-            User = user;
+            this.user = user;
+            userStatic = user;
             InitializeComponent();
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            if (user is Client client) { Task.Run(() => ClientAdd()); MessageBox.Show($"Добавлен новый клиент {(user as Client).Surname}"); }
+            if (user is Realtor realtor) { Task.Run(() => RealtorAdd()); MessageBox.Show($"Добавлен новый риелтор {(user as Realtor).Surname}"); }
+
+            Close();
+        }
+
+        private static async void RealtorAdd()
+        {
+            await RequestManager.Post<Realtor>($"Realtors/Add", userStatic as Realtor);
+        }
+
+        private static async void ClientAdd()
+        {
+            await RequestManager.Post<Client>($"Clients/Add", userStatic as Client);
         }
     }
 }
